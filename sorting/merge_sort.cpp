@@ -5,7 +5,7 @@
 #include <algorithm>
 using namespace std;
 
-typedef vector<unsigned long long int> Vector;
+typedef vector<int> Vector;
 typedef vector< Vector > VVector;
 
 
@@ -35,8 +35,9 @@ VVector read_vector_vector() {
 
 void print_vector(Vector v) {
     for (int i = 0; i < v.size(); ++i) {
-        cout << v[i] << endl;
+        cout << v[i] << " ";
     }
+    cout << endl;
 }
 
 void print_vector_vector(VVector v) {
@@ -45,19 +46,17 @@ void print_vector_vector(VVector v) {
     }
 }
 
-void merge(Vector &v, int i, int mid, int j, unsigned long long &swaps) {
+void merge(Vector &v, int i, int mid, int j) {
     int x = i;
     int y = mid + 1;
     Vector aux;
     while (x <= mid && y <= j) {
-        if (v[x] <= v[y]) {
+        if (v[x] < v[y]) {
             aux.push_back(v[x]);
             ++x;
         } else {
             aux.push_back(v[y]);
             ++y;
-            swaps += mid - x + 1;
-
         }
     }
     if (x <= mid) {
@@ -75,24 +74,20 @@ void merge(Vector &v, int i, int mid, int j, unsigned long long &swaps) {
     }
 }
 
-void merge_sort(Vector &v, int i, int j, unsigned long long &swaps) {
+void merge_sort(Vector &v, int i, int j) {
     if (i < j) {
         int mid = floor((i + j) / 2);
-        merge_sort(v, i, mid, swaps);
-        merge_sort(v, mid + 1, j, swaps);
-        merge(v, i, mid, j, swaps);
+        merge_sort(v, i, mid);
+        merge_sort(v, mid + 1, j);
+        merge(v, i, mid, j);
     }
 }
 
 int main() {
-    vector <unsigned long long> res;
-    VVector v;
-    v = read_vector_vector();
+    VVector v = read_vector_vector();
     for (int i = 0; i < v.size(); ++i) {
-        unsigned long long swaps = 0;
-        merge_sort(v[i], 0, v[i].size() - 1, swaps);
-        res.push_back(swaps);
+        merge_sort(v[i], 0, v[i].size() - 1);
     }
-    print_vector(res);
+    print_vector_vector(v);
     return 0;
 }
