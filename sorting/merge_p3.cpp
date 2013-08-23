@@ -57,7 +57,6 @@ void merge(Vector &v, int i, int mid, int j, unsigned long long &swaps) {
             aux.push_back(v[y]);
             ++y;
             swaps += mid - x + 1;
-
         }
     }
     if (x <= mid) {
